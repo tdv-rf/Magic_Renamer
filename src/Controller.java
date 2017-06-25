@@ -17,6 +17,7 @@ public class Controller {
     public ComboBox templateRename = new ComboBox();
     public Button buttonScan, buttonRename;
     public TableView tableBase = new TableView<RenFiles>();
+    public Label totalCount = new Label();
     private Boolean state;
     private String dir, choiceState,choiceMask;
     ObservableList<RenFiles> data;
@@ -44,11 +45,11 @@ public class Controller {
         }
     }
 
-    public void fieldMask() {
+    private void fieldMask() {
         choiceMask = mask.getText();
     }
 
-    public void choiceTemplate() {
+    private void choiceTemplate() {
         choiceState = templateRename.getValue().toString();
     }
 
@@ -67,6 +68,7 @@ public class Controller {
             Rename.offerNames(Scan.fileList,choiceMask);
         }
         addTableData();
+        totalCount.setText("Итого файлов: "+ Integer.toString(Scan.fileList.size()));
     }
 
     public void buttonRename(MouseEvent mouseEvent) {

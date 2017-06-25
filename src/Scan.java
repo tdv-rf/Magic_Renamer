@@ -8,6 +8,7 @@ public class Scan {
     private List<File> folderList = new ArrayList<>();
 
     public void check(String checkPath, Boolean recurse){
+        fileList.clear();
         scanForFiles(checkPath);
         while (!(folderList.isEmpty())&recurse){
             checkRecurse();
