@@ -9,14 +9,17 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <children>
       <VBox minHeight="600.0" minWidth="800.0">
          <children>
@@ -26,7 +29,7 @@
                      <content>
                         <HBox>
                            <children>
-                              <TableView>
+                              <TableView fx:id="tableBase">
                                 <columns>
                                   <TableColumn fx:id="currentNameColumn" editable="false" minWidth="250.0" prefWidth="75.0" text="Текущее имя" />
                                   <TableColumn fx:id="newNameColumn" editable="false" minWidth="250.0" prefWidth="75.0" text="Новое имя" />
@@ -55,11 +58,11 @@
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </padding>
                                           </Label>
-                                          <TextField fx:id="scanDir" promptText="Введите каталог" GridPane.columnIndex="1" />
+                                          <TextField fx:id="scanDir" promptText="Введите каталог" text="E:\Мульт\1" GridPane.columnIndex="1" />
                                           <Label text="Маска" GridPane.rowIndex="2" />
-                                          <TextField fx:id="mask" onAction="#fieldMask" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <TextField fx:id="mask" onKeyReleased="#checkForBlock" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                           <Label text="По шаблону" GridPane.rowIndex="3" />
-                                          <ComboBox fx:id="templateRename" onMouseClicked="#choiceTemplate" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                          <ComboBox fx:id="templateRename" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                           <ComboBox fx:id="recurse" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                        </children>
                                        <padding>
@@ -100,9 +103,21 @@
                         </HBox>
                      </content>
                 </Tab>
-                <Tab text="Настройки">
+                <Tab text="About">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <ImageView fitHeight="257.0" fitWidth="329.0" layoutX="272.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Renamer.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Label layoutX="361.0" layoutY="338.0" text="V 0.8 beta">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children></AnchorPane>
                   </content>
                 </Tab>
               </tabs>

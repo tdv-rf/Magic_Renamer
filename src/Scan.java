@@ -1,35 +1,37 @@
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Scan {
-    private File[] path;
-    private List<File> fileList = new ArrayList<>();
+    public static List<RenFiles> fileList = new ArrayList<>();
     private List<File> folderList = new ArrayList<>();
 
-    public List<File> check(String checkPath, Boolean recurse){
+    public void check(String checkPath, Boolean recurse){
         scanForFiles(checkPath);
-        if(!(folderList.isEmpty())&recurse){
+        while (!(folderList.isEmpty())&recurse){
             checkRecurse();
         }
-        return fileList;
     }
 
     private void scanForFiles(String checkPath) throws NullPointerException, SecurityException{
+        File[] path;
         path = new File(checkPath).listFiles();
         for(File file: path){
             if (file.isDirectory()){
                 folderList.add(file);
             }else {
-                fileList.add(file);
+                fileList.add(new RenFiles(file,file.getName()));
             }
         }
     }
 
     private void checkRecurse(){
-        for(File folder: folderList){
-            scanForFiles(folder.toString());
-            folderList.remove(folder);
+        Iterator<File> iterator = folderList.iterator();
+        while(iterator.hasNext()){
+            String subPath = iterator.next().toString();
+            scanForFiles(subPath);
+            iterator.remove();
         }
     }
-}
+} 

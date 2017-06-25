@@ -1,59 +1,91 @@
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 public class Controller {
-    public TableColumn currentNameColumn = new TableColumn(), newNameColumn = new TableColumn();
+    public TableColumn currentNameColumn = new TableColumn<RenFiles,String>();
+    public TableColumn newNameColumn = new TableColumn<RenFiles,String>();
     public TextField scanDir = new TextField(), mask = new TextField();;
     public ComboBox recurse = new ComboBox();
     public ComboBox templateRename = new ComboBox();
     public Button buttonScan, buttonRename;
+    public TableView tableBase = new TableView<RenFiles>();
     private Boolean state;
-    private String dir, choiceState;
+    private String dir, choiceState,choiceMask;
+    ObservableList<RenFiles> data;
 
     @FXML
     private void initialize(){
-    recurse.setItems(FXCollections.observableArrayList("Да","Нет"));
-//    recurse.setValue("Да");
-    templateRename.setItems(FXCollections.observableArrayList("Дата создания","Директория + имя", "Год + имя"));
+        currentNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        newNameColumn.setCellValueFactory(new PropertyValueFactory<>("newName"));
+        recurse.setItems(FXCollections.observableArrayList("Да","Нет"));
+        recurse.setValue("Да");
+        templateRename.setItems(FXCollections.observableArrayList("Дата создания","Директория + имя", "Год + имя"));
+        templateRename.setValue("Год + имя");
     }
 
-    public String setDirToScan() {
+    private void setDirToScan() {
         dir = scanDir.getText();
-        return dir;
     }
 
-    public Boolean choiceRecurse() {
+    private void choiceRecurse() {
         String recurseState = (String)recurse.getValue();
         if(recurseState.equals("Да")){
             this.state = true;
         }else if(recurseState.equals("Нет")){
             this.state = false;
         }
-        return state;
     }
 
-    public void fieldMask(ActionEvent actionEvent) {
+    public void fieldMask() {
+        choiceMask = mask.getText();
     }
 
-    public void choiceTemplate(MouseEvent mouseEvent) {
-        choiceState = (String)templateRename.getValue();
+    public void choiceTemplate() {
+        choiceState = templateRename.getValue().toString();
     }
 
-    public void buttonBeginScan(MouseEvent mouseEvent) {
+    public void buttonBeginScan(MouseEvent mouseEvent) throws IOException, ParseException {
         setDirToScan();
         choiceRecurse();
+        choiceTemplate();
+        fieldMask();
+     //Получаем список файлов
         Scan scanner = new Scan();
-        List<File> fileList = scanner.check(dir,state);
-        for(File file: fileList){
-            currentNameColumn.setText(file.getName());
+        scanner.check(dir,state);
+     //Генерируем новые имена файлов
+        if(choiceMask.equals("")){
+            Rename.offerNames(Scan.fileList,choiceState);
+        }else {
+            Rename.offerNames(Scan.fileList,choiceMask);
         }
+        addTableData();
     }
 
     public void buttonRename(MouseEvent mouseEvent) {
+        Rename.rename(Scan.fileList);
+        addTableData();
+    }
+
+    public void checkForBlock(KeyEvent keyEvent) {
+        if(!mask.getText().equals("")){
+            templateRename.setDisable(true);
+        }else{
+            templateRename.setDisable(false);
+        }
+    }
+
+    private void addTableData(){
+        //Заполняем данными таблицу
+        ObservableList<RenFiles> data = FXCollections.observableArrayList(Scan.fileList);
+        tableBase.setItems(data);
+        tableBase.refresh();
     }
 }

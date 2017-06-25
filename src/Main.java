@@ -1,5 +1,4 @@
 import javafx.application.Application;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -18,10 +17,6 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-
         launch(args);
-//    Scan list = new Scan();
-//    ArrayList ls= (ArrayList) list.check("/home/uset/Music/1/",true);
-//    ls.stream().forEach(System.out::println);
     }
 }
