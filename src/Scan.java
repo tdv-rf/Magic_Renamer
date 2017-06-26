@@ -26,7 +26,7 @@ class Scan {
                 }
             }
         }catch (SecurityException e){
-            System.out.println("Нет доступа к файлу по адресу: " + checkPath.toString() + " " + e);
+            throw new Error(3,"Нет доступа к файлу по адресу: " + checkPath.toString() + " " + e);
         }
     }
 } 

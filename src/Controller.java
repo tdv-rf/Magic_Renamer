@@ -7,7 +7,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.List;
 
 public class Controller {
     public TableColumn currentNameColumn = new TableColumn<RenFiles,String>();
@@ -17,13 +16,29 @@ public class Controller {
     public ComboBox templateRename = new ComboBox();
     public Button buttonScan, buttonRename;
     public TableView tableBase = new TableView<RenFiles>();
-    public Label totalCount = new Label();
+    public Label totalCount = new Label(), version = new Label();
+    public TextArea textField = new TextArea();
     private Boolean state;
     private String dir, choiceState,choiceMask;
     private ObservableList<RenFiles> data;
+    private final String VER = "0.91";
 
     @FXML
     private void initialize(){
+        String stri =   "G   Era designator  Text    AD\n" +
+                        "y   Year    Year    1996; 96\n" +
+                        "Y   Week year   Year    2009; 09\n" +
+                        "M   Month in year   Month   July; Jul; 07\n" +
+                        "w   Week in year    Number  27\n" +
+                        "W   Week in month   Number  2\n" +
+                        "D   Day in year Number  189\n" +
+                        "d   Day in month    Number  10\n" +
+                        "F   Day of week in month    Number  2\n" +
+                        "E   Day name in week    Text    Tuesday; Tue\n" +
+                        "u   Day number of week (1 = Monday, ..., 7 = Sunday) Number  1\n" +
+                        "Для набора своего текста введите в поле Text: +свой текст в имени файла";
+        textField.setText(stri);
+        version.setText(VER);
         currentNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         newNameColumn.setCellValueFactory(new PropertyValueFactory<>("newName"));
         recurse.setItems(FXCollections.observableArrayList("Да","Нет"));
@@ -79,8 +94,10 @@ public class Controller {
     public void checkForBlock(KeyEvent keyEvent) {
         if(!mask.getText().equals("")){
             templateRename.setDisable(true);
+            textField.setVisible(true);
         }else{
             templateRename.setDisable(false);
+            textField.setVisible(false);
         }
     }
 
@@ -89,5 +106,9 @@ public class Controller {
         ObservableList<RenFiles> data = FXCollections.observableArrayList(Scan.fileList);
         tableBase.setItems(data);
         tableBase.refresh();
+    }
+
+    public void showHelp(MouseEvent mouseEvent) {
+        textField.setVisible(true);
     }
 }
