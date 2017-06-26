@@ -1,38 +1,32 @@
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Comparator;
 import java.util.List;
 
-public class Scan {
-    public static List<RenFiles> fileList = new ArrayList<>();
-    private List<File> folderList = new ArrayList<>();
+class Scan {
+    static List<RenFiles> fileList = new ArrayList<>();
+    private Boolean recurse;
 
-    public void check(String checkPath, Boolean recurse){
+    void check(String checkPath, Boolean recurse){
+        this.recurse = recurse;
         fileList.clear();
-        scanForFiles(checkPath);
-        while (!(folderList.isEmpty())&recurse){
-            checkRecurse();
-        }
+        scanForFiles(new File(checkPath));
+        fileList.sort(Comparator.comparing(RenFiles::getFile));
     }
-
-    private void scanForFiles(String checkPath) throws NullPointerException, SecurityException{
-        File[] path;
-        path = new File(checkPath).listFiles();
-        for(File file: path){
-            if (file.isDirectory()){
-                folderList.add(file);
-            }else {
-                fileList.add(new RenFiles(file,file.getName()));
+    private void scanForFiles(File checkPath){
+        File[] path = checkPath.listFiles();
+        try {
+            if (path != null) {
+                for (File file : path) {
+                    if (file.isDirectory() & recurse) {
+                        scanForFiles(file);
+                    } else {
+                        fileList.add(new RenFiles(file, file.getName()));
+                    }
+                }
             }
-        }
-    }
-
-    private void checkRecurse(){
-        Iterator<File> iterator = folderList.iterator();
-        while(iterator.hasNext()){
-            String subPath = iterator.next().toString();
-            scanForFiles(subPath);
-            iterator.remove();
+        }catch (SecurityException e){
+            System.out.println("Нет доступа к файлу по адресу: " + checkPath.toString() + " " + e);
         }
     }
 } 

@@ -20,7 +20,7 @@ public class Controller {
     public Label totalCount = new Label();
     private Boolean state;
     private String dir, choiceState,choiceMask;
-    ObservableList<RenFiles> data;
+    private ObservableList<RenFiles> data;
 
     @FXML
     private void initialize(){

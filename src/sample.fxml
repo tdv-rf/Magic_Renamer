@@ -57,7 +57,7 @@
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </padding>
                                           </Label>
-                                          <TextField fx:id="scanDir" promptText="Введите каталог" text="E:\Мульт\1" GridPane.columnIndex="1" />
+                                          <TextField fx:id="scanDir" promptText="Введите каталог" text="/home/uset/Music" GridPane.columnIndex="1" />
                                           <Label text="Маска" GridPane.rowIndex="2" />
                                           <TextField fx:id="mask" onKeyReleased="#checkForBlock" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                           <Label text="По шаблону" GridPane.rowIndex="3" />

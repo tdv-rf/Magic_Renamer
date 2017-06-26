@@ -6,28 +6,29 @@ public class RenFiles {
     private String name;
     private String newName;
 
-    public RenFiles(File file, String name){
+    RenFiles(File file, String name){
         this.file = file;
         this.name = name;
     }
+
+    //Public для TableView
     public String getName(){
         return name;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
-    public File getFile() {
-        return file;
-    }
-
+    //Public для TableView
     public String getNewName() {
         return newName;
     }
 
-    public void setNewName(String newName) {
+    protected void setName(String name) {
+        this.name = name;
+    }
+
+
+    File getFile() {
+        return file;
+    }
+    void setNewName(String newName) {
         this.newName = newName;
     }
 }
