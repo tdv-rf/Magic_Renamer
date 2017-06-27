@@ -1,15 +1,15 @@
 
-public enum Error {
-    IOException(0,"Файл не найден."),
-    EMPTY_PATH(1,"Казанный каталог пуст."),
-    SecurityException(2,"Нет доступа к файлу");
+public enum EnumError {
+    IOException(0,"Файл не найден!"),
+    EMPTY_PATH(1,"Указанная директория пуста!"),
+    SecurityException(2,"Нет доступа к файлу!");
 
 
 
     private final int code;
     private final String description;
 
-    Error(int code, String description){
+    EnumError(int code, String description){
         this.code = code;
         this.description = description;
     }

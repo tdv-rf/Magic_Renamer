@@ -5,8 +5,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import java.io.IOException;
-import java.text.ParseException;
+import javafx.stage.FileChooser;
 
 public class Controller {
     public TableColumn currentNameColumn = new TableColumn<RenFiles,String>();
@@ -21,7 +20,7 @@ public class Controller {
     private Boolean state;
     private String dir, choiceState,choiceMask;
     private ObservableList<RenFiles> data;
-    private final String VER = "0.91";
+    private final String VER = "0.92";
 
     @FXML
     private void initialize(){
@@ -36,7 +35,9 @@ public class Controller {
                         "F   Day of week in month    Number  2\n" +
                         "E   Day name in week    Text    Tuesday; Tue\n" +
                         "u   Day number of week (1 = Monday, ..., 7 = Sunday) Number  1\n" +
-                        "Для набора своего текста введите в поле Text: +свой текст в имени файла";
+                        "\n"+
+                        "\n"+
+                        "Для набора своего текста введите в поле Text: +свой текст";
         textField.setText(stri);
         version.setText(VER);
         currentNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -47,8 +48,18 @@ public class Controller {
         templateRename.setValue("Год + имя");
     }
 
-    private void setDirToScan() {
-        dir = scanDir.getText();
+    private void setDirToScan(){
+        scanDir.setStyle("-fx-border-color:d9dce0;");
+        try {
+            dir = scanDir.getText();
+            if(dir.equals(""))
+                throw new MyError(EnumError.EMPTY_PATH);
+        }catch (MyError e) {
+            textField.setVisible(true);
+            textField.setStyle("-fx-font-size: 20px;");
+            scanDir.setStyle("-fx-border-color:red;");
+            textField.setText(e.description.toString());
+        }
     }
 
     private void choiceRecurse() {
@@ -68,7 +79,7 @@ public class Controller {
         choiceState = templateRename.getValue().toString();
     }
 
-    public void buttonBeginScan(MouseEvent mouseEvent) throws IOException, ParseException {
+    public void buttonBeginScan(MouseEvent mouseEvent) {
         setDirToScan();
         choiceRecurse();
         choiceTemplate();
@@ -110,5 +121,10 @@ public class Controller {
 
     public void showHelp(MouseEvent mouseEvent) {
         textField.setVisible(true);
+    }
+
+    public void openFileExplorer(MouseEvent mouseEvent) {
+//        FileChooser fileChooser = new FileChooser();
+//        fileChooser.showOpenDialog(stage);
     }
 }

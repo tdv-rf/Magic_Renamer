@@ -16,28 +16,28 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <children>
-      <VBox alignment="TOP_RIGHT" minHeight="600.0" minWidth="800.0">
-         <children>
-            <TabPane prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
-              <tabs>
-                <Tab text="Главная">
-                     <content>
-                        <HBox>
+      <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <tabs>
+          <Tab text="Главная">
+               <content>
+                  <AnchorPane>
+                     <children>
+                        <TableView fx:id="tableBase" minHeight="560.0" minWidth="500.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="280.0" AnchorPane.topAnchor="0.0">
+                          <columns>
+                            <TableColumn fx:id="currentNameColumn" editable="false" maxWidth="-1.0" minWidth="250.0" prefWidth="-1.0" text="Текущее имя" />
+                            <TableColumn fx:id="newNameColumn" editable="false" maxWidth="-1.0" minWidth="250.0" prefWidth="-1.0" text="Новое имя" />
+                          </columns>
+                        </TableView>
+                        <AnchorPane layoutX="502.0" AnchorPane.rightAnchor="0.0">
                            <children>
-                              <TableView fx:id="tableBase" minHeight="560.0" minWidth="500.0">
-                                <columns>
-                                  <TableColumn fx:id="currentNameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="250.0" prefWidth="-1.0" text="Текущее имя" />
-                                  <TableColumn fx:id="newNameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="250.0" prefWidth="-1.0" text="Новое имя" />
-                                </columns>
-                              </TableView>
-                              <VBox alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="100.0" prefWidth="100.0">
+                              <VBox>
                                  <children>
                                     <GridPane hgap="5.0" minWidth="280.0" vgap="10.0">
                                       <columnConstraints>
@@ -58,7 +58,7 @@
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </padding>
                                           </Label>
-                                          <TextField fx:id="scanDir" promptText="Введите каталог" text="E:\Мульт\1" GridPane.columnIndex="1" />
+                                          <TextField fx:id="scanDir" onMouseClicked="#openFileExplorer" promptText="Введите каталог" GridPane.columnIndex="1" />
                                           <Label text="Маска" GridPane.rowIndex="2" />
                                           <TextField fx:id="mask" onKeyReleased="#checkForBlock" onMouseClicked="#showHelp" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                           <Label text="По шаблону" GridPane.rowIndex="3" />
@@ -72,16 +72,13 @@
                                           <Insets top="10.0" />
                                        </opaqueInsets>
                                        <VBox.margin>
-                                          <Insets top="25.0" />
+                                          <Insets />
                                        </VBox.margin>
                                     </GridPane>
                                     <TextArea fx:id="textField" editable="false" prefHeight="254.0" prefWidth="280.0" visible="false" wrapText="true">
                                        <font>
                                           <Font size="10.0" />
                                        </font>
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding>
@@ -114,37 +111,35 @@
                                        </opaqueInsets>
                                     </GridPane>
                                  </children>
+                                 <padding>
+                                    <Insets left="10.0" right="10.0" />
+                                 </padding>
                               </VBox>
                            </children>
-                        </HBox>
-                     </content>
-                </Tab>
-                <Tab text="About">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <ImageView fitHeight="257.0" fitWidth="329.0" layoutX="272.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@Renamer.jpg" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="version" layoutX="361.0" layoutY="338.0">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children></AnchorPane>
-                  </content>
-                </Tab>
-              </tabs>
-            </TabPane>
-         </children>
-      </VBox>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+          </Tab>
+          <Tab text="About">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="257.0" fitWidth="329.0" layoutX="272.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Renamer.jpg" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="version" layoutX="361.0" layoutY="338.0">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
    </children>
-   <columnConstraints>
-      <ColumnConstraints />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints />
-   </rowConstraints>
-</GridPane>
+</AnchorPane>
