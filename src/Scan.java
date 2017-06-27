@@ -26,7 +26,7 @@ class Scan {
                 }
             }
         }catch (SecurityException e){
-            new MyError(EnumError.SecurityException);
+            System.out.println(EnumError.SecurityException);
         }
     }
 } 

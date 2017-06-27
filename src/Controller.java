@@ -7,20 +7,19 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 
+
 public class Controller {
-    public TableColumn currentNameColumn = new TableColumn<RenFiles,String>();
-    public TableColumn newNameColumn = new TableColumn<RenFiles,String>();
-    public TextField scanDir = new TextField(), mask = new TextField();;
-    public ComboBox recurse = new ComboBox();
-    public ComboBox templateRename = new ComboBox();
+    public TableColumn<RenFiles,String> currentNameColumn = new TableColumn<>();
+    public TableColumn<RenFiles,String> newNameColumn = new TableColumn<>();
+    public TextField scanDir = new TextField(), mask = new TextField();
+    public ComboBox<String> recurse = new ComboBox<>();
+    public ComboBox<String> templateRename = new ComboBox<>();
     public Button buttonScan, buttonRename;
-    public TableView tableBase = new TableView<RenFiles>();
+    public TableView<RenFiles> tableBase = new TableView<>();
     public Label totalCount = new Label(), version = new Label();
     public TextArea textField = new TextArea();
     private Boolean state;
     private String dir, choiceState,choiceMask;
-    private ObservableList<RenFiles> data;
-    private final String VER = "0.92";
 
     @FXML
     private void initialize(){
@@ -39,7 +38,7 @@ public class Controller {
                         "\n"+
                         "Для набора своего текста введите в поле Text: +свой текст";
         textField.setText(stri);
-        version.setText(VER);
+        version.setText("0.92");
         currentNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         newNameColumn.setCellValueFactory(new PropertyValueFactory<>("newName"));
         recurse.setItems(FXCollections.observableArrayList("Да","Нет"));
@@ -63,7 +62,7 @@ public class Controller {
     }
 
     private void choiceRecurse() {
-        String recurseState = (String)recurse.getValue();
+        String recurseState = recurse.getValue();
         if(recurseState.equals("Да")){
             this.state = true;
         }else if(recurseState.equals("Нет")){
@@ -76,7 +75,7 @@ public class Controller {
     }
 
     private void choiceTemplate() {
-        choiceState = templateRename.getValue().toString();
+        choiceState = templateRename.getValue();
     }
 
     public void buttonBeginScan(MouseEvent mouseEvent) {

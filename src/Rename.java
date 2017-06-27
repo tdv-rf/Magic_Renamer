@@ -11,7 +11,6 @@ import java.util.List;
 class Rename {
 
     private static BasicFileAttributes attr;
-    EnumError ee;
     static void offerNames(List<RenFiles> file, String mask) {
         for (RenFiles current : file) {
             String setName;
