@@ -3,9 +3,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.FileChooser;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
+import java.io.File;
 
 
 public class Controller {
@@ -78,7 +78,7 @@ public class Controller {
         choiceState = templateRename.getValue();
     }
 
-    public void buttonBeginScan(MouseEvent mouseEvent) {
+    public void buttonBeginScan() {
         setDirToScan();
         choiceRecurse();
         choiceTemplate();
@@ -96,12 +96,12 @@ public class Controller {
         totalCount.setText("Итого файлов: "+ Integer.toString(Scan.fileList.size()));
     }
 
-    public void buttonRename(MouseEvent mouseEvent) {
+    public void buttonRename() {
         Rename.rename(Scan.fileList);
         addTableData();
     }
 
-    public void checkForBlock(KeyEvent keyEvent) {
+    public void checkForBlock() {
         if(!mask.getText().equals("")){
             templateRename.setDisable(true);
             textField.setVisible(true);
@@ -118,12 +118,15 @@ public class Controller {
         tableBase.refresh();
     }
 
-    public void showHelp(MouseEvent mouseEvent) {
+    public void showHelp() {
         textField.setVisible(true);
     }
 
-    public void openFileExplorer(MouseEvent mouseEvent) {
-//        FileChooser fileChooser = new FileChooser();
-//        fileChooser.showOpenDialog(stage);
+    public void openFileExplorer() {
+        DirectoryChooser dirChooser = new DirectoryChooser();
+        File selectedFile = dirChooser.showDialog(new Stage());
+        if(selectedFile != null){
+            scanDir.setText(selectedFile.getPath());
+        }
     }
 }
