@@ -12,8 +12,10 @@ class Rename {
 
     private static BasicFileAttributes attr;
     static void offerNames(List<RenFiles> file, String mask) {
+        int i =0;
         for (RenFiles current : file) {
-            String setName;
+            i++;
+            String setName, ext="";
             switch (mask) {
                 case "Директория + имя":
                     current.setNewName(current.getFile().getPath() + " " + current.getFile().getName());
@@ -28,13 +30,20 @@ class Rename {
                     break;
                 default:
                     if(mask.contains("Text:")){
-                        setName = mask.substring(5);
+                        if(mask.substring(5).contains("[i]")) {
+                            if(i<10) {setName = "0" + i + " " + mask.substring(8);
+                            }else{setName = i + " " + mask.substring(8);}
+                        }else{
+                            setName = mask.substring(5);
+                        }
                     }else {
                         //Проверяем на спецсимволы по маске.
                         dateTime(current.getFile());
                         setName = new SimpleDateFormat(mask).format(attr.creationTime().toMillis());
                     }
-                    current.setNewName(setName + " " + current.getFile().getName());
+                    int z = current.getFile().getName().lastIndexOf(".");
+                    if (z > 0) ext = current.getFile().getName().substring(z);
+                    current.setNewName(setName + ext);
             }
         }
     }

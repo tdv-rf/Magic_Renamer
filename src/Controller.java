@@ -35,10 +35,10 @@ public class Controller {
                         "E   Day name in week    Text    Tuesday; Tue\n" +
                         "u   Day number of week (1 = Monday, ..., 7 = Sunday) Number  1\n" +
                         "\n"+
-                        "\n"+
+                        "[i] Для вставки счетчика\n"+
                         "Для набора своего текста введите в поле Text: +свой текст";
         textField.setText(stri);
-        version.setText("0.92");
+        version.setText("0.93");
         currentNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         newNameColumn.setCellValueFactory(new PropertyValueFactory<>("newName"));
         recurse.setItems(FXCollections.observableArrayList("Да","Нет"));
