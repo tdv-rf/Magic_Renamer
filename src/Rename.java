@@ -36,6 +36,9 @@ class Rename {
                         }else{
                             setName = mask.substring(5);
                         }
+                    }else if(mask.contains("Dell:")) {
+                        current.setNewName(current.getFile().getName().replace(mask.substring(5),""));
+                        break;
                     }else {
                         //Проверяем на спецсимволы по маске.
                         dateTime(current.getFile());

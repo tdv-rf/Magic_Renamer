@@ -43,7 +43,7 @@ public class Controller {
         newNameColumn.setCellValueFactory(new PropertyValueFactory<>("newName"));
         recurse.setItems(FXCollections.observableArrayList("Да","Нет"));
         recurse.setValue("Да");
-        templateRename.setItems(FXCollections.observableArrayList("Дата создания","Директория + имя", "Год + имя"));
+        templateRename.setItems(FXCollections.observableArrayList("Дата создания","Директория + имя", "Год + имя", "Удалить часть имени"));
         templateRename.setValue("Год + имя");
     }
 
