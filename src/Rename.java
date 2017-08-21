@@ -1,64 +1,61 @@
+
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.nio.file.attribute.BasicFileAttributeView;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 class Rename {
 
-    private static BasicFileAttributes attr;
-    static void offerNames(List<RenFiles> file, String mask) {
+    static void offerNames(List<RenFiles> file, String mask, String state) {
         int i =0;
         for (RenFiles current : file) {
+            String setName, k, ext="";
             i++;
-            String setName, ext="";
-            switch (mask) {
+            if(i<10) {
+                k = "0" + i + " ";
+            }else {
+                k = i + " ";
+            }
+            int z = current.getFile().getName().lastIndexOf(".");
+            if (z > 0) ext = current.getFile().getName().substring(z);
+
+            switch (state) {
                 case "Директория + имя":
                     current.setNewName(current.getFile().getPath() + " " + current.getFile().getName());
                     break;
                 case "Год + имя":
-                    String str = dateTime(current.getFile()).substring(0, 4);
+                    String str = current.getCreationStamp().toString().substring(0, 4);
                     current.setNewName(str + " " + current.getFile().getName());
                     break;
                 case "Дата создания":
-                    str = dateTime(current.getFile()).substring(0, 10);
+                    str = current.getCreationStamp().toString().substring(0, 10);
                     current.setNewName(str + " " + current.getFile().getName());
                     break;
-                default:
-                    if(mask.contains("Text:")){
-                        if(mask.substring(5).contains("[i]")) {
-                            if(i<10) {setName = "0" + i + " " + mask.substring(8);
-                            }else{setName = i + " " + mask.substring(8);}
-                        }else{
-                            setName = mask.substring(5);
-                        }
-                    }else if(mask.contains("Dell:")) {
-                        current.setNewName(current.getFile().getName().replace(mask.substring(5),""));
-                        break;
-                    }else {
-                        //Проверяем на спецсимволы по маске.
-                        dateTime(current.getFile());
-                        setName = new SimpleDateFormat(mask).format(attr.creationTime().toMillis());
+                case "Удалить часть имени":
+                    current.setNewName(current.getFile().getName().replace(mask,""));
+                    break;
+                case "Добавить часть имени":
+                    current.setNewName(current.getFile().getName().substring(0,z) + " " + mask + ext);
+                    break;
+                case "Задать свое имя":
+                    if(mask.contains("[i]")) {
+                        current.setNewName(k + mask.substring(3) + ext);
+                    }else{
+                        current.setNewName(mask + ext);
                     }
-                    int z = current.getFile().getName().lastIndexOf(".");
-                    if (z > 0) ext = current.getFile().getName().substring(z);
-                    current.setNewName(setName + ext);
+                    break;
+                case "Дата по маске":
+                    if(!mask.equals("")) {
+                        if(mask.contains("[i]")) {
+                            setName = new SimpleDateFormat(mask.substring(3)).format(current.getCreationStamp().toMillis());
+                            current.setNewName(k + setName + ext);
+                        }else {
+                            setName = new SimpleDateFormat(mask).format(current.getCreationStamp().toMillis());
+                            current.setNewName(setName + ext);
+                        }
+                    }
+                    break;
             }
         }
-    }
-
-    private static String dateTime(File file) {
-        try {
-            Path path = Paths.get(file.getAbsoluteFile().toURI());
-            attr = Files.getFileAttributeView(path, BasicFileAttributeView.class).readAttributes();
-        }catch (IOException e){
-            System.out.println(EnumError.IOException.toString());
-        }
-      return attr.creationTime().toString();
     }
 
     static void rename(List<RenFiles> file){

@@ -1,6 +1,14 @@
+import error.EnumError;
+
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributeView;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 class Scan {
@@ -11,7 +19,6 @@ class Scan {
         this.recurse = recurse;
         fileList.clear();
         scanForFiles(new File(checkPath));
-        fileList.sort(Comparator.comparing(RenFiles::getFile));
     }
     private void scanForFiles(File checkPath){
         File[] path = checkPath.listFiles();
@@ -21,12 +28,26 @@ class Scan {
                     if (file.isDirectory() & recurse) {
                         scanForFiles(file);
                     } else {
-                        fileList.add(new RenFiles(file, file.getName()));
+                        FileTime fileDate = dateTime(file);
+                        fileList.add(new RenFiles(file, file.getName(), fileDate));
                     }
                 }
             }
         }catch (SecurityException e){
             System.out.println(EnumError.SecurityException);
         }
+    }
+
+    private static FileTime dateTime(File file) {
+        BasicFileAttributes attr;
+        FileTime filedate = null;
+        try {
+            Path path = Paths.get(file.getAbsoluteFile().toURI());
+            attr = Files.getFileAttributeView(path, BasicFileAttributeView.class).readAttributes();
+            filedate = attr.creationTime();
+        }catch (IOException e){
+            System.out.println(EnumError.IOException.toString());
+        }
+        return filedate;
     }
 } 

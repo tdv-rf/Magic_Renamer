@@ -1,3 +1,4 @@
+package error;
 
 public enum EnumError {
     IOException(0,"Файл не найден!"),
