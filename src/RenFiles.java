@@ -8,7 +8,7 @@ public class RenFiles {
     private String newName;
     private FileTime creationStamp;
 
-    RenFiles(File file, String name, FileTime creationStamp){
+    RenFiles(File file, String name, FileTime creationStamp) {
         this.file = file;
         this.name = name;
         this.creationStamp = creationStamp;
@@ -19,9 +19,10 @@ public class RenFiles {
     }
 
     //Public для TableView
-    public String getName(){
+    public String getName() {
         return name;
     }
+
     //Public для TableView
     public String getNewName() {
         return newName;
@@ -34,6 +35,7 @@ public class RenFiles {
     File getFile() {
         return file;
     }
+
     void setNewName(String newName) {
         this.newName = newName;
     }

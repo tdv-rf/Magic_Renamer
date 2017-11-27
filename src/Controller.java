@@ -9,6 +9,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import java.io.File;
 import java.util.Comparator;
+import java.util.List;
 
 
 public class Controller {
@@ -24,6 +25,7 @@ public class Controller {
     public TextArea textField = new TextArea();
     private Boolean state;
     private String dir, choiceState,choiceMask;
+    private List<RenFiles> fileList;
 
     @FXML
     private void initialize(){
@@ -66,7 +68,7 @@ public class Controller {
         }
     }
 
-    private void choiceRecurse() {
+    private void isRecurse() {
         String recurseState = recurse.getValue();
         if(recurseState.equals("Да")){
             this.state = true;
@@ -85,26 +87,26 @@ public class Controller {
 
     public void buttonBeginScan() {
         setDirToScan();
-        choiceRecurse();
+        isRecurse();
         choiceTemplate();
         fieldMask();
      //Получаем список файлов
-        Scan scanner = new Scan();
-        scanner.check(dir,state);
+        FileScanner fileScanner = new FileScanner(dir,state);
+        fileList = fileScanner.getFileList();
      //Сортируем данные
         if(sortOrder.getValue().equals("По имени")){
-            Scan.fileList.sort(Comparator.comparing(RenFiles::getFile));
+            fileList.sort(Comparator.comparing(RenFiles::getFile));
         }else if(sortOrder.getValue().equals("По дате создания")){
-            Scan.fileList.sort(Comparator.comparing(RenFiles::getCreationStamp));
+            fileList.sort(Comparator.comparing(RenFiles::getCreationStamp));
         }
      //Генерируем новые имена файлов
-        Rename.offerNames(Scan.fileList,choiceMask, choiceState);
+        Rename.offerNames(fileList,choiceMask, choiceState);
         addTableData();
-        totalCount.setText("Итого файлов: "+ Integer.toString(Scan.fileList.size()));
+        totalCount.setText("Итого файлов: "+ Integer.toString(fileList.size()));
     }
 
     public void buttonRename() {
-        Rename.rename(Scan.fileList);
+        Rename.rename(fileList);
         addTableData();
     }
 
@@ -118,7 +120,7 @@ public class Controller {
 
     private void addTableData(){
         //Заполняем данными таблицу
-        ObservableList<RenFiles> data = FXCollections.observableArrayList(Scan.fileList);
+        ObservableList<RenFiles> data = FXCollections.observableArrayList(fileList);
         tableBase.setItems(data);
         tableBase.refresh();
     }
