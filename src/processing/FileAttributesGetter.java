@@ -1,3 +1,5 @@
+package processing;
+
 import error.EnumError;
 
 import java.io.File;
