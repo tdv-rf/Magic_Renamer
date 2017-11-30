@@ -11,11 +11,12 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import java.io.File;
 import java.util.List;
+import static processing.DropDownFieldValues.*;
 
 
 public class Controller {
-    public TableColumn<RenFiles,String> currentNameColumn = new TableColumn<>();
-    public TableColumn<RenFiles,String> newNameColumn = new TableColumn<>();
+    public TableColumn<RenFiles, String> currentNameColumn = new TableColumn<>();
+    public TableColumn<RenFiles, String> newNameColumn = new TableColumn<>();
     public TextField selectedDir = new TextField(), mask = new TextField();
     public ComboBox<String> recurse = new ComboBox<>();
     public ComboBox<String> sortOrder = new ComboBox<>();
@@ -28,28 +29,28 @@ public class Controller {
     private Rename rename;
 
     @FXML
-    private void initialize(){
+    private void initialize() {
         currentNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         newNameColumn.setCellValueFactory(new PropertyValueFactory<>("newName"));
-        version.setText(DropDownFieldValues.version);
-        textField.setText(DropDownFieldValues.helpTextForMask);
-        recurse.setItems(DropDownFieldValues.recurseChoise);
-        recurse.setValue("Да");
-        sortOrder.setItems(DropDownFieldValues.sortChoise);
-        sortOrder.setValue("По имени");
-        templateRename.setItems(DropDownFieldValues.predifinedNameChoise);
-        templateRename.setValue("Год + имя");
+        version.setText(programVersion);
+        textField.setText(helpTextForMask);
+        recurse.getItems().addAll(recurseChoise);
+        recurse.setValue(recurseChoise[0]);
+        sortOrder.getItems().addAll(sortChoise);
+        sortOrder.setValue(sortChoise[0]);
+        templateRename.getItems().addAll(NameChoiser.toStringArray());
+        templateRename.setValue(NameChoiser.YEAR_AND_NAME.getValue());
     }
 
-    private String getDirectoryTextField(){
+    private String getDirectoryTextField() {
         selectedDir.setStyle("-fx-border-color:d9dce0;");
         String selectedDirectory = "";
         try {
             selectedDirectory = selectedDir.getText();
-            if(selectedDirectory.equals("")) {
+            if (selectedDirectory.equals("")) {
                 throw new MyError(EnumError.EMPTY_PATH);
             }
-        }catch (MyError e) {
+        } catch (MyError e) {
             textField.setVisible(true);
             textField.setStyle("-fx-font-size: 20px;");
             selectedDir.setStyle("-fx-border-color:red;");
@@ -62,10 +63,10 @@ public class Controller {
         getFileList();
         generateNewFileNames();
         fillTableWithData();
-        totalCount.setText("Итого файлов: "+ Integer.toString(fileList.size()));
+        totalCount.setText("Итого файлов: " + Integer.toString(fileList.size()));
     }
 
-    private void getFileList(){
+    private void getFileList() {
         String recurseState = recurse.getValue();
         String sortBy = sortOrder.getValue();
         FileScanner fileScanner = new FileScanner();
@@ -75,9 +76,9 @@ public class Controller {
         fileList = fileScanner.getFileList();
     }
 
-    private void generateNewFileNames(){
+    private void generateNewFileNames() {
         String renameOwnMask = mask.getText();
-        if (renameOwnMask.equals("")){
+        if (renameOwnMask.equals("")) {
             renameOwnMask = "dd-MM-YYYY";
         }
         String nameChoice = templateRename.getValue();
@@ -90,7 +91,7 @@ public class Controller {
         fillTableWithData();
     }
 
-    private void fillTableWithData(){
+    private void fillTableWithData() {
         ObservableList<RenFiles> data = FXCollections.observableArrayList(fileList);
         tableBase.setItems(data);
         tableBase.refresh();
@@ -101,17 +102,13 @@ public class Controller {
     }
 
     public void hideHelp() {
-        if(!mask.getText().equals("")){
-            textField.setVisible(true);
-        }else{
-            textField.setVisible(false);
-        }
+        textField.setVisible(!mask.getText().equals(""));
     }
 
     public void openFileExplorer() {
         DirectoryChooser dirChooser = new DirectoryChooser();
         File selectedFile = dirChooser.showDialog(new Stage());
-        if(selectedFile != null){
+        if (selectedFile != null) {
             selectedDir.setText(selectedFile.getPath());
         }
     }

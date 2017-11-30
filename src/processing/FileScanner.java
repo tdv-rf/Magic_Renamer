@@ -13,16 +13,14 @@ class FileScanner {
     private Boolean recurseStatus;
 
     void setRecurseStatus(String status) {
-        if (status.equals("Да")) {
-            this.recurseStatus = true;
-        } else if (status.equals("Нет")) {
-            this.recurseStatus = false;
-        }
+        String choice = (DropDownFieldValues.recurseChoise)[0];
+        this.recurseStatus = choice.equals(status);
     }
 
     void setDirToScan(String checkPath) {
-        if (!(checkPath == null || checkPath.equals("")))
+        if (!(checkPath == null || checkPath.equals(""))) {
             createFileList(new File(checkPath));
+        }
     }
 
     private void createFileList(File checkPath) {
@@ -43,9 +41,10 @@ class FileScanner {
     }
 
     void sortFileList(String sortOrder) {
-        if (sortOrder.equals("По имени")) {
+        String[] sortVarants = DropDownFieldValues.sortChoise;
+        if (sortVarants[0].equals(sortOrder)) {
             fileList.sort(Comparator.comparing(RenFiles::getFile));
-        } else if (sortOrder.equals("По дате создания")) {
+        } else if (sortVarants[1].equals(sortOrder)) {
             fileList.sort(Comparator.comparing(RenFiles::getCreationStamp));
         }
     }

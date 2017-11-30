@@ -19,30 +19,30 @@ class Rename {
         int i = 0;
         for (RenFiles currentFile : fileList) {
             String extension = getExtension(currentFile);
-
-            switch (nameChoice) {
-                case "Директория + имя":
+            NameChoiser choice = NameChoiser.getValueformString(nameChoice);
+            switch (choice) {
+                case DIRECTORY_AND_NAME:
                     currentFile.setNewName(currentFile.getFile().getPath() + " " + currentFile.getFile().getName());
                     break;
-                case "Год + имя":
+                case YEAR_AND_NAME:
                     String str = currentFile.getCreationStamp().toString().substring(0, 4);
                     currentFile.setNewName(str + " " + currentFile.getFile().getName());
                     break;
-                case "Дата создания":
+                case CREATION_DATE:
                     str = currentFile.getCreationStamp().toString().substring(0, 10);
                     currentFile.setNewName(str + " " + currentFile.getFile().getName());
                     break;
-                case "Удалить часть имени":
+                case DEL_PART_NAME:
                     currentFile.setNewName(currentFile.getFile().getName().replace(renameOwnMask, ""));
                     break;
-                case "Добавить часть имени":
+                case ADD_PART_NAME:
                     int z = currentFile.getFile().getName().lastIndexOf(".");
                     currentFile.setNewName(currentFile.getFile().getName().substring(0, z) + " " + renameOwnMask + extension);
                     break;
-                case "Задать свое имя":
+                case MAKE_OWN_NAME:
                     currentFile.setNewName(renameOwnMask + extension);
                     break;
-                case "Дата по маске":
+                case DATE_BY_MASK:
                     String setName = new SimpleDateFormat(renameOwnMask).format(currentFile.getCreationStamp().toMillis());
                     currentFile.setNewName(setName + extension);
                     break;
@@ -66,16 +66,18 @@ class Rename {
 
     private String getExtension(RenFiles currentFile) {
         String extension = "";
-        int z = currentFile.getFile().getName().lastIndexOf(".");
-        if (z > 0) extension = currentFile.getFile().getName().substring(z);
+        int indexOfExtension = currentFile.getFile().getName().lastIndexOf(".");
+        if (indexOfExtension > 0){
+            extension = currentFile.getFile().getName().substring(indexOfExtension);
+        }
         return extension;
     }
 
     void setNamesToFiles(List<RenFiles> file) {
         for (RenFiles current : file) {
             File resultFileName = new File(current.getFile().getParent() + File.separator + current.getNewName());
-            boolean status = current.getFile().renameTo(resultFileName);
-            if (status) {
+            boolean renameStatus = current.getFile().renameTo(resultFileName);
+            if (renameStatus) {
                 current.setNewName("Done!");
             } else {
                 current.setNewName("Error!");

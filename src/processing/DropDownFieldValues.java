@@ -1,9 +1,8 @@
 package processing;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+public class DropDownFieldValues {
 
-class DropDownFieldValues {
+
     static final String helpTextForMask =   "G   Era designator  Text    AD\n" +
             "y   Year    Year    1996; 96\n" +
             "Y   Week year   Year    2009; 09\n" +
@@ -17,12 +16,7 @@ class DropDownFieldValues {
             "u   Day number of week (1 = Monday, ..., 7 = Sunday) Number  1\n" +
             "\n"+
             "[i] Для вставки счетчика";
-    static final String version = "0.97";
-    static final ObservableList<String> recurseChoise =  FXCollections.observableArrayList("Да","Нет");
-    static final ObservableList<String> sortChoise = FXCollections.observableArrayList("По имени", "По дате создания");
-    static final ObservableList<String> predifinedNameChoise = FXCollections.observableArrayList(
-            "Дата создания","Директория + имя",
-            "Год + имя", "Удалить часть имени",
-            "Добавить часть имени", "Задать свое имя",
-            "Дата по маске");
+    static final String programVersion = "0.97";
+    static final String[] recurseChoise = new String[]{"Да","Нет"};
+    static final String[] sortChoise = new String[]{"По имени", "По дате создания"};
 }
